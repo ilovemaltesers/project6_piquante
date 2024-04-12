@@ -4,15 +4,17 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 
-mongoose.connect(
-  "mongodb+srv://SaraRead:SaraRead@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-);.then(() => {
-  console.log("Successfully connected to MongoDB Atlas!");
-}).catch((error) => {
-  console.log("Unable to connect to MongoDB Atlas!");
-  console.error(error);
-});
-
+mongoose
+  .connect(
+    "mongodb+srv://SaraRead:SaraRead@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then(() => {
+    console.log("Successfully connected to MongoDB Atlas!");
+  })
+  .catch((error) => {
+    console.log("Unable to connect to MongoDB Atlas!");
+    console.error(error);
+  });
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
