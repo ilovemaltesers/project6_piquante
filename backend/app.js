@@ -1,4 +1,7 @@
 // mongodb+srv://SaraRead:<password>@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+// password 1cITxDC2qg6LqD3K
+
+//
 
 const express = require("express");
 const app = express();
@@ -6,7 +9,7 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    "mongodb+srv://SaraRead:SaraRead@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://SaraRead:1cITxDC2qg6LqD3K@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
   )
   .then(() => {
     console.log("Successfully connected to MongoDB Atlas!");
