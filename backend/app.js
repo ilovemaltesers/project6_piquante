@@ -9,6 +9,8 @@ app.use(express.json());
 
 const mongoose = require("mongoose");
 
+const userRoutes = require("./routes/userRoutes");
+
 mongoose
   .connect(
     "mongodb+srv://SaraRead:1cITxDC2qg6LqD3K@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -37,5 +39,7 @@ app.use((req, res, next) => {
 app.use((req, res) => {
   res.json({ message: "Your request was successful!" });
 });
+
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
