@@ -1,15 +1,17 @@
 // mongodb+srv://SaraRead:<password>@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 // password 1cITxDC2qg6LqD3K
 
-//
-
 const express = require("express");
 const app = express();
 app.use(express.json());
 
 const mongoose = require("mongoose");
 
+// ROUTES
+
 const userRoutes = require("./routes/userRoutes");
+
+// MONGOOSE CONNECTION
 
 mongoose
   .connect(
@@ -39,6 +41,8 @@ app.use((req, res, next) => {
 app.use((req, res) => {
   res.json({ message: "Your request was successful!" });
 });
+
+//APP TO USE THESE ROUTES
 
 app.use("/api/auth", userRoutes);
 
