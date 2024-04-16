@@ -27,7 +27,7 @@ exports.signup = (req, res, next) => {
 // login function
 
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: req.body.email }) // find the user in the database (if matching email is found)
     .then((user) => {
       if (!user) {
         return res.status(401).json({
@@ -35,13 +35,14 @@ exports.login = (req, res, next) => {
         });
       }
       bcrypt
-        .compare(req.body.password, user.password)
+        .compare(req.body.password, user.password) // compare the password entered by the user with the hashed password stored in the database
         .then((valid) => {
           if (!valid) {
             return res.status(401).json({
               error: new Error("Incorrect password!"),
             });
           }
+          // if the password is correct, a token is generated
           res.status(200).json({
             userId: user._id,
             token: "token",
