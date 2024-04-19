@@ -1,1 +1,14 @@
+
+get http://localhost:3000
+
+### 
+
+
 post http://localhost:3000/api/auth/login
+
+###
+
+post http://localhost:3000/api/auth/signup
+
+
+
