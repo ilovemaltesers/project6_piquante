@@ -2,28 +2,17 @@
 // password 1cITxDC2qg6LqD3K
 
 const express = require("express");
-
-//install cors
-
 const cors = require("cors");
-
-app.use(cors());
+const mongoose = require("mongoose");
+const auth = require("./middleware/authMiddleware");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-
-const mongoose = require("mongoose");
-
-// MIDDLEWARE
-
-const auth = require("./middleware/authMiddleware");
-
 app.use(auth);
-
-// ROUTES
-
-const userRoutes = require("./routes/userRoutes");
+app.use("/api/auth", userRoutes);
 
 // MONGOOSE CONNECTION
 
@@ -42,9 +31,5 @@ mongoose
 app.use((req, res) => {
   res.json({ message: "Your request was successful!" });
 });
-
-//APP TO USE THESE ROUTES
-
-app.use("/api/auth", userRoutes);
 
 module.exports = app;
