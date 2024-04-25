@@ -6,6 +6,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routes/userRoutes");
+const sauceRoutes = require("./routes/sauceRoutes");
 
 const app = express();
 
