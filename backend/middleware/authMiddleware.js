@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = (req, res, next) => {
+function authorise(req, res, next) {
   try {
     const token = req.headers.authorization.split(" ")[1]; // get the token from the Authorization header
     const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET"); // verify the token
@@ -16,4 +16,5 @@ module.exports = (req, res, next) => {
       error: new Error("Invalid request!"),
     });
   }
-};
+}
+module.exports = authorise;
