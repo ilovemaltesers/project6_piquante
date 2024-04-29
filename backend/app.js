@@ -9,6 +9,9 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
+// for working with file and directory paths
+const path = require("path");
+
 app.use(cors());
 app.use(express.json());
 
@@ -31,5 +34,8 @@ mongoose
 app.use((req, res) => {
   res.json({ message: "Your request was successful!" });
 });
+
+// /tells Express to serve the images in the images folder
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
