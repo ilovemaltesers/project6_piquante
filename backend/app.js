@@ -1,5 +1,4 @@
-// mongodb+srv://SaraRead:<password>@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-// password 1cITxDC2qg6LqD3K
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -18,10 +17,13 @@ app.use(express.json());
 app.use("/api/auth", userRoutes);
 
 // MONGOOSE CONNECTION
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbHost = process.env.DB_HOST;
 
 mongoose
   .connect(
-    "mongodb+srv://SaraRead:1cITxDC2qg6LqD3K@cluster0.bkyxzv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/?retryWrites=true&w=majority&appName=Cluster0`
   )
   .then(() => {
     console.log("Successfully connected to MongoDB Atlas!");
@@ -31,11 +33,6 @@ mongoose
     console.error(error);
   });
 
-app.use((req, res) => {
-  res.json({ message: "Your request was successful!" });
-});
-
-// /tells Express to serve the images in the images folder
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
