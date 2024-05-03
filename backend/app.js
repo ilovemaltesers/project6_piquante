@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routes/userRoutes");
+const sauceRoutes = require("./routes/sauceRoutes");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", userRoutes);
+app.use("/api/sauces", sauceRoutes);
 
 // MONGOOSE CONNECTION
 const dbUser = process.env.DB_USER;
