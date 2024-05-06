@@ -33,6 +33,31 @@ exports.getAllSauces = (req, res) => {
   ]);
 };
 
-exports.getOneSauce = (req, res) => {
-  
-  
+exports.createSauce = (req, res) => {
+  const url = req.protocol + "://" + req.get("host");
+
+  const sauce = new Sauce({
+    name: req.body.name,
+    manufacturer: req.body.manufacturer,
+    description: req.body.description,
+    mainPepper: req.body.mainPepper,
+    imageUrl: url + "/images/" + req.file.filename,
+    heat: req.body.heat,
+    likes: 0,
+    dislikes: 0,
+    usersLiked: [],
+    usersDisliked: [],
+  });
+  sauce
+    .save()
+    .then(() => {
+      res.status(201).json({
+        message: "New sauce created successfully 🔥!",
+      });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error,
+      });
+    });
+};

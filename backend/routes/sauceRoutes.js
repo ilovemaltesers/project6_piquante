@@ -13,7 +13,7 @@ const multer = require("../middleware/multer-config");
 // get all sauces
 router.get("/", sauceController.getAllSauces);
 
-// get one sauce
-router.get("/:id", auth, getOneSauce);
+// create a sauce
+router.post("/", auth, multer, sauceController.createSauce);
 
 module.exports = router;
