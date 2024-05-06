@@ -30,3 +30,6 @@ exports.getAllSauces = (req, res) => {
     },
   ]);
 };
+
+exports.getOneSauce = (req, res) => {
+  
