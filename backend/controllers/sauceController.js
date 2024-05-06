@@ -1,3 +1,5 @@
+const Sauce = require("../models/Sauce");
+
 exports.getAllSauces = (req, res) => {
   res.send([
     {
@@ -32,4 +34,5 @@ exports.getAllSauces = (req, res) => {
 };
 
 exports.getOneSauce = (req, res) => {
+  
   
