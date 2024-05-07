@@ -43,3 +43,15 @@ exports.createSauce = (req, res) => {
       });
     });
 };
+
+exports.getOneSauce = (req, res) => {
+  Sauce.findOne({ _id: req.params.id })
+    .then((sauce) => {
+      res.status(200).json(sauce);
+    })
+    .catch((error) => {
+      res.status(404).json({
+        message: error.message,
+      });
+    });
+};
