@@ -36,6 +36,7 @@ exports.getAllSauces = (req, res) => {
 exports.createSauce = (req, res) => {
   const url = req.protocol + "://" + req.get("host");
   req.body.sauce = JSON.parse(req.body.sauce);
+  console.log(req.body.sauce);
 
   const sauce = new Sauce({
     name: req.body.sauce.name,
@@ -48,6 +49,7 @@ exports.createSauce = (req, res) => {
     dislikes: 0,
     usersLiked: [],
     usersDisliked: [],
+    userId: req.body.sauce.userId,
   });
   sauce
     .save()
@@ -58,7 +60,7 @@ exports.createSauce = (req, res) => {
     })
     .catch((error) => {
       res.status(400).json({
-        error: error,
+        message: error.message,
       });
     });
 };
