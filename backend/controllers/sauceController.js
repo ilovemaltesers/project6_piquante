@@ -48,7 +48,6 @@ exports.createSauce = (req, res) => {
     dislikes: 0,
     usersLiked: [],
     usersDisliked: [],
-    userId: req.body.sauce.userId,
   });
   sauce
     .save()

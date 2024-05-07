@@ -16,7 +16,4 @@ router.get("/", sauceController.getAllSauces);
 // create a sauce
 router.post("/", auth, multer, sauceController.createSauce);
 
-// get one sauce
-router.get("/:id", sauceController.getOneSauce);
-
 module.exports = router;
