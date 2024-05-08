@@ -22,4 +22,7 @@ router.get("/:id", sauceController.getOneSauce);
 // update a sauce
 router.put("/:id", auth, multer, sauceController.updateSauce);
 
+// delete a sauce
+router.delete("/:id", auth, sauceController.deleteSauce);
+
 module.exports = router;
