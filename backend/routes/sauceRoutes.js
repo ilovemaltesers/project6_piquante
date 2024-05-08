@@ -8,7 +8,7 @@ const auth = require("../middleware/authMiddleware");
 
 const multer = require("../middleware/multer-config");
 
-// later to add auth and mult in the routes!!!!!
+// Routes
 
 // get all sauces
 router.get("/", sauceController.getAllSauces);
