@@ -137,3 +137,96 @@ exports.deleteSauce = (req, res) => {
       });
     });
 };
+
+// like or dislike a sauce
+
+exports.likeOrDislikeSauce = (req, res) => {
+  // find the sauce by id
+  Sauce.findOne({ _id: req.params.id })
+    .then((sauce) => {
+      // if the user likes the sauce
+      if (req.body.like === 1) {
+        // if the user has already liked the sauce
+        if (sauce.usersLiked.includes(req.body.userId)) {
+          res.status(400).json({
+            message: "You already liked this sauce!",
+          });
+        } else {
+          // if the user has already disliked the sauce
+          if (sauce.usersDisliked.includes(req.body.userId)) {
+            // remove the user from the usersDisliked array
+            sauce.usersDisliked = sauce.usersDisliked.filter(
+              (userId) => userId !== req.body.userId
+            );
+            // decrement the number of dislikes
+            sauce.dislikes--;
+          }
+          // add the user to the usersLiked array
+          sauce.usersLiked.push(req.body.userId);
+          // increment the number of likes
+          sauce.likes++;
+        }
+      }
+      // if the user dislikes the sauce
+      if (req.body.like === -1) {
+        // if the user has already disliked the sauce
+        if (sauce.usersDisliked.includes(req.body.userId)) {
+          res.status(400).json({
+            message: "You already disliked this sauce!",
+          });
+        } else {
+          // if the user has already liked the sauce
+          if (sauce.usersLiked.includes(req.body.userId)) {
+            // remove the user from the usersLiked array
+            sauce.usersLiked = sauce.usersLiked.filter(
+              (userId) => userId !== req.body.userId
+            );
+            // decrement the number of likes
+            sauce.likes--;
+          }
+          // add the user to the usersDisliked array
+          sauce.usersDisliked.push(req.body.userId);
+          // increment the number of dislikes
+          sauce.dislikes++;
+        }
+      }
+      // if the user removes the like or dislike
+      if (req.body.like === 0) {
+        // if the user has already liked the sauce
+        if (sauce.usersLiked.includes(req.body.userId)) {
+          // remove the user from the usersLiked array
+          sauce.usersLiked = sauce.usersLiked.filter(
+            (userId) => userId !== req.body.userId
+          );
+          // decrement the number of likes
+          sauce.likes--;
+        }
+        // if the user has already disliked the sauce
+        if (sauce.usersDisliked.includes(req.body.userId)) {
+          // remove the user from the usersDisliked array
+          sauce.usersDisliked = sauce.usersDisliked.filter(
+            (userId) => userId !== req.body.userId
+          );
+          // decrement the number of dislikes
+          sauce.dislikes--;
+        }
+      }
+      // update the sauce in the DATABASE
+      Sauce.updateOne({ _id: req.params.id }, sauce)
+        .then(() => {
+          res.status(201).json({
+            message: "Sauce liked/disliked successfully!",
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            message: error.message,
+          });
+        });
+    })
+    .catch((error) => {
+      res.status(404).json({
+        message: error.message,
+      });
+    });
+};
