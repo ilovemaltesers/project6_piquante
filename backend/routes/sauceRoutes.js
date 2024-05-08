@@ -19,4 +19,7 @@ router.post("/", auth, multer, sauceController.createSauce);
 // get one sauce
 router.get("/:id", sauceController.getOneSauce);
 
+// update a sauce
+router.put("/:id", auth, multer, sauceController.updateSauce);
+
 module.exports = router;
