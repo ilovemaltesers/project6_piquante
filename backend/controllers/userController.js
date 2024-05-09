@@ -20,7 +20,8 @@ exports.signup = (req, res, next) => {
           });
         })
         .catch((error) => {
-          res.status(500).json({
+          res.status(409).json({
+            message: "This email is already in use!",
             error: error,
           });
         });
@@ -38,7 +39,8 @@ exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) // find the user in the database (if matching email is found)
     .then((user) => {
       if (!user) {
-        return res.status(401).json({
+        return res.status(404).json({
+          message: "User not found, please sign up!",
           error: new Error("User not found!"),
         });
       }
