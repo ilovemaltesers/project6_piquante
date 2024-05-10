@@ -5,7 +5,14 @@ const fs = require("fs");
 exports.getAllSauces = (req, res) => {
   Sauce.find()
     .then((sauces) => {
-      res.status(200).json(sauces);
+      const url = req.protocol + "://" + req.get("host");
+      const updatedImages = sauces.map((sauce) => {
+        return {
+          ...sauce,
+          imageUrl: url + "/images/" + sauce.imageUrl,
+        };
+      });
+      res.status(200).json(updatedImages);
     })
     .catch((error) => {
       res.status(400).json({
@@ -24,7 +31,7 @@ exports.createSauce = (req, res) => {
     manufacturer: req.body.sauce.manufacturer,
     description: req.body.sauce.description,
     mainPepper: req.body.sauce.mainPepper,
-    imageUrl: url + "/images/" + req.file.filename,
+    imageUrl: req.file.filename,
     heat: req.body.sauce.heat,
     likes: 0,
     dislikes: 0,
