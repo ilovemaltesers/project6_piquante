@@ -56,10 +56,20 @@ exports.createSauce = (req, res) => {
 exports.getOneSauce = (req, res) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      res.status(200).json(sauce);
+      if (!sauce) {
+        return res.status(404).json({
+          message: "Sauce not found",
+        });
+      }
+      const url = req.protocol + "://" + req.get("host");
+      const updatedSauce = {
+        ...sauce.toObject(), // Convert Mongoose Document to plain object
+        imageUrl: url + "/images/" + sauce.imageUrl,
+      };
+      res.status(200).json(updatedSauce);
     })
     .catch((error) => {
-      res.status(404).json({
+      res.status(500).json({
         message: error.message,
       });
     });
