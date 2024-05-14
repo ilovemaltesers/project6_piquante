@@ -2,16 +2,22 @@ const Sauce = require("../models/Sauce");
 // for working with file and directory paths
 const fs = require("fs");
 
+// Get all sauces 🌷
+
 exports.getAllSauces = (req, res) => {
   Sauce.find()
     .then((sauces) => {
-      const updatedImages = sauces.map((sauce) => {
+      const url = req.protocol + "://" + req.get("host");
+      const updatedSauces = sauces.map((sauce) => {
         return {
           ...sauce.toObject(),
-          imageUrl: sauce.imageUrl,
+          imageUrl: url + "/images/" + sauce.imageUrl,
         };
       });
-      res.status(200).json(updatedImages);
+      res.status(200).json(updatedSauces);
+      //  console log the updatedSauces as well as the imageUrl to demonstrate that the imageUrl is now a full url
+      console.log(updatedSauces);
+      console.log(updatedSauces[0].imageUrl);
     })
     .catch((error) => {
       res.status(400).json({
@@ -51,12 +57,15 @@ exports.createSauce = (req, res) => {
     });
 };
 
+// Get one sauce 🌷
+
 exports.getOneSauce = (req, res) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
+      const url = req.protocol + "://" + req.get("host");
       const updatedSauce = {
         ...sauce.toObject(),
-        imageUrl: sauce.imageUrl,
+        imageUrl: url + "/images/" + sauce.imageUrl,
       };
 
       console.log(updatedSauce.imageUrl); // Log the imageUrl
