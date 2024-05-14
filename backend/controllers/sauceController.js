@@ -68,7 +68,7 @@ exports.getOneSauce = (req, res) => {
         imageUrl: url + "/images/" + sauce.imageUrl,
       };
 
-      console.log(updatedSauce.imageUrl); // Log the imageUrl
+      console.log(updatedSauce.imageUrl); // Log the imageUrlgit sta
 
       res.status(200).json(updatedSauce);
     })
