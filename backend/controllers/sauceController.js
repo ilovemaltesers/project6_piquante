@@ -68,7 +68,7 @@ exports.getOneSauce = (req, res) => {
         imageUrl: url + "/images/" + sauce.imageUrl,
       };
 
-      console.log(updatedSauce.imageUrl); // Log the imageUrlgit sta
+      console.log(updatedSauce.imageUrl); // Log the imageUrl
 
       res.status(200).json(updatedSauce);
     })
@@ -132,30 +132,35 @@ exports.updateSauce = (req, res) => {
 // Delete a sauce
 
 exports.deleteSauce = (req, res) => {
-  // find the sauce by id
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      // get the filename of the image from the url of the image in the database
-      const filename = sauce.imageUrl.split("/images/")[1];
-      fs.unlink("images/" + filename, () => {
-        // delete the sauce from the DATABASE
+      if (!sauce) {
+        return res.status(404).json({ message: "Sauce not found" });
+      }
+
+      // Get the filename of the image from the sauce object
+      const filename = sauce.imageUrl;
+
+      // Delete the image file from the server directory
+      fs.unlink("images/" + filename, (err) => {
+        if (err) {
+          console.error("Error deleting image:", err);
+          // Handle error while deleting image
+          return res.status(500).json({ message: "Error deleting image" });
+        }
+
+        // Delete the sauce from the database after successful deletion of image
         Sauce.deleteOne({ _id: req.params.id })
           .then(() => {
-            res.status(200).json({
-              message: "Sauce deleted successfully!",
-            });
+            res.status(200).json({ message: "Sauce deleted successfully" });
           })
           .catch((error) => {
-            res.status(400).json({
-              message: error.message,
-            });
+            res.status(400).json({ message: error.message });
           });
       });
     })
     .catch((error) => {
-      res.status(500).json({
-        message: error.message,
-      });
+      res.status(500).json({ message: error.message });
     });
 };
 
