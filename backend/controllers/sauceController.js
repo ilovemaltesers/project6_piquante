@@ -174,7 +174,7 @@ exports.likeOrDislikeSauce = (req, res) => {
       if (req.body.like === 1) {
         // if the user has already liked the sauce
         if (sauce.usersLiked.includes(req.body.userId)) {
-          res.status(400).json({
+          return res.status(400).json({
             message: "You already liked this sauce!",
           });
         } else {
