@@ -21,7 +21,6 @@ exports.getAllSauces = (req, res) => {
 };
 
 exports.createSauce = (req, res) => {
-  const url = req.protocol + "://" + req.get("host");
   req.body.sauce = JSON.parse(req.body.sauce);
   console.log(req.body.sauce);
 
@@ -30,7 +29,7 @@ exports.createSauce = (req, res) => {
     manufacturer: req.body.sauce.manufacturer,
     description: req.body.sauce.description,
     mainPepper: req.body.sauce.mainPepper,
-    imageUrl: url + "/images/" + req.file.filename,
+    imageUrl: req.file.filename, // Only store the filename
     heat: req.body.sauce.heat,
     likes: 0,
     dislikes: 0,
