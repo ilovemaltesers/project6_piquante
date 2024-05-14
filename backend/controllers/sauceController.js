@@ -5,11 +5,10 @@ const fs = require("fs");
 exports.getAllSauces = (req, res) => {
   Sauce.find()
     .then((sauces) => {
-      const url = req.protocol + "://" + req.get("host");
       const updatedImages = sauces.map((sauce) => {
         return {
-          ...sauce,
-          imageUrl: url + "/images/" + sauce.imageUrl,
+          ...sauce.toObject(),
+          imageUrl: sauce.imageUrl,
         };
       });
       res.status(200).json(updatedImages);
@@ -31,7 +30,7 @@ exports.createSauce = (req, res) => {
     manufacturer: req.body.sauce.manufacturer,
     description: req.body.sauce.description,
     mainPepper: req.body.sauce.mainPepper,
-    imageUrl: req.file.filename,
+    imageUrl: url + "/images/" + req.file.filename,
     heat: req.body.sauce.heat,
     likes: 0,
     dislikes: 0,
@@ -56,20 +55,17 @@ exports.createSauce = (req, res) => {
 exports.getOneSauce = (req, res) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      if (!sauce) {
-        return res.status(404).json({
-          message: "Sauce not found",
-        });
-      }
-      const url = req.protocol + "://" + req.get("host");
       const updatedSauce = {
-        ...sauce.toObject(), // Convert Mongoose Document to plain object
-        imageUrl: url + "/images/" + sauce.imageUrl,
+        ...sauce.toObject(),
+        imageUrl: sauce.imageUrl,
       };
+
+      console.log(updatedSauce.imageUrl); // Log the imageUrl
+
       res.status(200).json(updatedSauce);
     })
     .catch((error) => {
-      res.status(500).json({
+      res.status(404).json({
         message: error.message,
       });
     });
