@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator"); // Corrected import
+
+// uniqueValidator ensures that a field's value is unique across all records in the database.
+const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
   email: {
