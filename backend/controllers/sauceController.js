@@ -8,7 +8,6 @@ exports.getAllSauces = (req, res) => {
   Sauce.find()
     .then((sauces) => {
       const url = req.protocol + "://" + req.get("host");
-      // map over each sauce and return a new object with the imageUrl as a full url
       const updatedSauces = sauces.map((sauce) => {
         return {
           ...sauce.toObject(),
@@ -16,9 +15,6 @@ exports.getAllSauces = (req, res) => {
         };
       });
       res.status(200).json(updatedSauces);
-      //  console log the updatedSauces as well as the imageUrl to demonstrate that the imageUrl is now a full url
-      console.log(updatedSauces);
-      console.log(updatedSauces[0].imageUrl);
     })
     .catch((error) => {
       res.status(400).json({
