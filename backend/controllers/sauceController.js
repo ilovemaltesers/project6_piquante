@@ -1,6 +1,7 @@
 const Sauce = require("../models/Sauce");
 // for working with file and directory paths
 const fs = require("fs");
+const path = require("path");
 
 // Get all sauces 🌷
 
@@ -79,49 +80,66 @@ exports.getOneSauce = (req, res) => {
 // update a sauce
 
 exports.updateSauce = (req, res) => {
-  let sauce = new Sauce({ _id: req.params.id });
+  Sauce.findOne({ _id: req.params.id })
+    .then((oldSauce) => {
+      let sauce = new Sauce({ _id: req.params.id });
 
-  // if there is a new image
-  if (req.file) {
-    // get the url of the image
-    const url = req.protocol + "://" + req.get("host");
-    // parse the sauce object
-    // update the imageUrl with the new image and the url
-    // update the sauce object
-    req.body.sauce = JSON.parse(req.body.sauce);
-    sauce = {
-      _id: req.params.id,
-      name: req.body.sauce.name,
-      manufacturer: req.body.sauce.manufacturer,
-      description: req.body.sauce.description,
-      mainPepper: req.body.sauce.mainPepper,
-      imageUrl: req.file.filename,
-      heat: req.body.sauce.heat,
-      userId: req.body.sauce.userId,
-    };
-  } else {
-    // if there is no new image we update the sauce object with the data from the form without the image
-    sauce = {
-      _id: req.params.id,
-      name: req.body.name,
-      manufacturer: req.body.manufacturer,
-      description: req.body.description,
-      mainPepper: req.body.mainPepper,
-      imageUrl: req.body.imageUrl,
-      heat: req.body.heat,
-      userId: req.body.userId,
-    };
-  }
-  // update the sauce in the DATABASE
-  Sauce.updateOne({ _id: req.params.id }, sauce)
-    .then(() => {
-      res.status(201).json({
-        message: "Sauce updated successfully!",
+      // if there is a new image
+      if (req.file) {
+        // get the url of the image
+        const url = req.protocol + "://" + req.get("host");
+        // parse the sauce object
+        // update the imageUrl with the new image and the url
+        // update the sauce object
+        req.body.sauce = JSON.parse(req.body.sauce);
+        sauce = {
+          _id: req.params.id,
+          name: req.body.sauce.name,
+          manufacturer: req.body.sauce.manufacturer,
+          description: req.body.sauce.description,
+          mainPepper: req.body.sauce.mainPepper,
+          imageUrl: req.file.filename,
+          heat: req.body.sauce.heat,
+          userId: req.body.sauce.userId,
+        };
+
+        // Delete the old image file
+        const oldImagePath = path.join(
+          __dirname,
+          "..",
+          "images",
+          oldSauce.imageUrl
+        );
+        console.log(oldImagePath); // Log the path to the old image
+        fs.unlink(oldImagePath, (err) => {
+          if (err) {
+            console.error(err); // Log any errors
+            return;
+          }
+        });
+      } else {
+        // if there is no new image we update the sauce object with the data from the form without the image
+        sauce = {
+          _id: req.params.id,
+          name: req.body.name,
+          manufacturer: req.body.manufacturer,
+          description: req.body.description,
+          mainPepper: req.body.mainPepper,
+          imageUrl: req.body.imageUrl,
+          heat: req.body.heat,
+          userId: req.body.userId,
+        };
+      }
+      // update the sauce in the DATABASE
+      Sauce.updateOne({ _id: req.params.id }, sauce).then(() => {
+        res.status(201).json({
+          message: "Sauce updated successfully!",
+        });
       });
     })
     .catch((error) => {
       res.status(400).json({
-        message: error.message,
+        error: error,
       });
     });
 };
