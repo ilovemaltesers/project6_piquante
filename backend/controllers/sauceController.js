@@ -95,7 +95,7 @@ exports.updateSauce = (req, res) => {
       manufacturer: req.body.sauce.manufacturer,
       description: req.body.sauce.description,
       mainPepper: req.body.sauce.mainPepper,
-      imageUrl: url + "/images/" + req.file.filename,
+      imageUrl: req.file.filename,
       heat: req.body.sauce.heat,
       userId: req.body.sauce.userId,
     };
