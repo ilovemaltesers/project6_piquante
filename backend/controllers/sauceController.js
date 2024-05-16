@@ -6,9 +6,14 @@ const path = require("path");
 // Get all sauces 🌷
 
 exports.getAllSauces = (req, res) => {
+  // use sauce model to find all sauces in the database
   Sauce.find()
     .then((sauces) => {
       const url = req.protocol + "://" + req.get("host");
+
+      /*maps over the array retrieved from DB and creates a new array of obj
+      where each sauce obj is augmented with the full image URL. ToObject() is used to convert the mongoose 
+      object to a plain JS object */
       const updatedSauces = sauces.map((sauce) => {
         return {
           ...sauce.toObject(),
@@ -80,25 +85,24 @@ exports.getOneSauce = (req, res) => {
 // update a sauce
 
 exports.updateSauce = (req, res) => {
+  // find sauce to be modified
   Sauce.findOne({ _id: req.params.id })
     .then((oldSauce) => {
+      // create a new sauce object with the same id
       let sauce = new Sauce({ _id: req.params.id });
 
-      // if there is a new image
+      // if there is a new image uploaded in the request
       if (req.file) {
-        // get the url of the image
         const url = req.protocol + "://" + req.get("host");
-        // parse the sauce object
-        // update the imageUrl with the new image and the url
-        // update the sauce object
         req.body.sauce = JSON.parse(req.body.sauce);
+        // Update the sauce object with new data including the new image
         sauce = {
           _id: req.params.id,
           name: req.body.sauce.name,
           manufacturer: req.body.sauce.manufacturer,
           description: req.body.sauce.description,
           mainPepper: req.body.sauce.mainPepper,
-          imageUrl: req.file.filename,
+          imageUrl: req.file.filename, // new image filenname
           heat: req.body.sauce.heat,
           userId: req.body.sauce.userId,
         };
@@ -110,10 +114,10 @@ exports.updateSauce = (req, res) => {
           "images",
           oldSauce.imageUrl
         );
-        console.log(oldImagePath); // Log the path to the old image
+        console.log(oldImagePath);
         fs.unlink(oldImagePath, (err) => {
           if (err) {
-            console.error(err); // Log any errors
+            console.error(err);
             return;
           }
         });
