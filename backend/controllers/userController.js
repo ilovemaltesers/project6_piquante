@@ -20,7 +20,7 @@ exports.signup = (req, res, next) => {
           });
         })
         .catch((error) => {
-          res.status(409).json({
+          res.status(403).json({
             message: "This email is already in use!",
             error: error,
           });
