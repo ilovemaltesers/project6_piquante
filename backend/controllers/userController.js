@@ -48,7 +48,7 @@ exports.login = (req, res, next) => {
         .compare(req.body.password, user.password) // compare the password entered by the user with the hashed password stored in the database
         .then((valid) => {
           if (!valid) {
-            return res.status(401).json({
+            return res.status(403).json({
               error: new Error("Incorrect password!"),
             });
           }

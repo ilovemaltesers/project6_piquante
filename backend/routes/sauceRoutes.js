@@ -11,13 +11,13 @@ const multer = require("../middleware/multer-config");
 // Routes
 
 // get all sauces
-router.get("/", sauceController.getAllSauces);
+router.get("/", auth, sauceController.getAllSauces);
 
 // create a sauce
 router.post("/", auth, multer, sauceController.createSauce);
 
 // get one sauce
-router.get("/:id", sauceController.getOneSauce);
+router.get("/:id", auth, sauceController.getOneSauce);
 
 // update a sauce
 router.put("/:id", auth, multer, sauceController.updateSauce);
