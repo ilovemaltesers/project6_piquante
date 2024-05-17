@@ -1,6 +1,5 @@
 node_modules/
 .env
 images/
-package.json
-package-lock.json
+
 
